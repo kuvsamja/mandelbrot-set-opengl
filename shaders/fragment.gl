@@ -2,44 +2,42 @@
 
 in vec2 frag_uv;
 
-uniform dvec2 camera_world_position;
-uniform dvec2 camera_world_size;
+uniform vec2 camera_world_position;
+uniform vec2 camera_world_size;
 
 out vec4 out_color;
 
-dvec2 cx_add(dvec2 a, dvec2 b) {
-    return dvec2(
+vec2 cx_add(vec2 a, vec2 b) {
+    return vec2(
         a.x + b.x,
         a.y + b.y
     );
 }
 
-dvec2 cx_sub(dvec2 a, dvec2 b) {
-    return dvec2(
+vec2 cx_sub(vec2 a, vec2 b) {
+    return vec2(
         a.x - b.x,
         a.y - b.y
     );
 }
 
-dvec2 cx_mul(dvec2 a, dvec2 b) {
-    return dvec2(
+vec2 cx_mul(vec2 a, vec2 b) {
+    return vec2(
         a.x*b.x - a.y*b.y,
         a.y*b.x + a.x*b.y
     );
 }
 
-double cx_abs_sq(dvec2 a) {
+double cx_abs_sq(vec2 a) {
     return (a.x*a.x + a.y*a.y);
 }
 
-double z2pcDivergenceSpeed(dvec2 c, int max_iterations) {
-    dvec2 z = dvec2(0.0, 0.0);
+double z2pcDivergenceSpeed(vec2 c, int max_iterations) {
+    vec2 z = vec2(0.0, 0.0);
     for (int i = 0; i < max_iterations; i++) {
         z = cx_add(cx_mul(z, z), c);
         if (cx_abs_sq(z) > 4.0) {
-            // length() has no dvec2 overload, so cast down to float
-            // just for this smooth-coloring correction term.
-            float len = length(vec2(z));
+                        float len = length(vec2(z));
             return i + 1 - log2(log2(len));
         }
     }
@@ -70,7 +68,7 @@ vec4 iterationsToColor(double t) {
 }
 
 void main() {
-    dvec2 c = camera_world_position + dvec2(frag_uv) * camera_world_size;
+    vec2 c = camera_world_position + vec2(frag_uv) * camera_world_size;
     int max_iterations = int(100 * max(1.0, log2(3.5 / float(camera_world_size.x))));
     max_iterations = min(max_iterations, 2000);
     double iteration_count = z2pcDivergenceSpeed(c, max_iterations);

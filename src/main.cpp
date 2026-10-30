@@ -189,12 +189,12 @@ int main() {
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
         mandelbrot_shader->use();
-        mandelbrot_shader->setDVec2(
+        mandelbrot_shader->setVec2(
             "camera_world_position",
             camera.pos_x,
             camera.pos_y
         );
-        mandelbrot_shader->setDVec2(
+        mandelbrot_shader->setVec2(
             "camera_world_size",
             camera.size_x,
             camera.size_y
@@ -205,6 +205,6 @@ int main() {
         std::cout << (glfwGetTime() - start_time) << std::endl;
         start_time = glfwGetTime();
     }
-    std::cout << (glfwGetTime() - start_time)<< std::endl;
-    std::cout << (double)i / (glfwGetTime() - start_time) << std::endl;
+    // std::cout << (glfwGetTime() - start_time)<< std::endl;
+    // std::cout << (double)i / (glfwGetTime() - start_time) << std::endl;
 }
